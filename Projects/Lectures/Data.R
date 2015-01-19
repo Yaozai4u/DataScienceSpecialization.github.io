@@ -140,3 +140,81 @@ cameraDataSubset
 # read.xlsx2 is faster than read.xlsx but unstable in subset of rows reading
 
 
+# Reading XML
+# http://en.wikipedia.org/wiki/XML
+# Elements <Greeting> Hello </Greeting>
+#         Attributes 
+# <img src="jeff.jpg" alt"instructor"/>
+# <step number"3"> Connect A to B </step>
+# http://www.w3schools.com/xml/simple.xml
+
+install.packages("XML")
+library(XML)
+
+url <- "http://www.w3schools.com/xml/simple.xml"
+
+?xmlTreeParse
+doc <-xmlTreeParse(url, useInternal=T)
+rootNode <- xmlRoot(doc)
+xmlName(rootNode)
+
+names(rootNode)
+
+rootNode[[1]]
+# First Element
+rootNode[[1]][[1]]
+
+# Programatically extract parts of the file
+xmlSApply(rootNode, xmlValue)
+
+# # XPath
+#  /node Top level node
+#  //node Node at any level
+#  node[@attr-name] Node with an attribute name
+# node[@attr-name-'bob'] node with attribute name attr-name-'bob'
+
+url <- "http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf"
+download.file(url , destfile="./data/XML.pdf", method="curl")
+
+# Get the items on the menu and prices
+xpathSApply(rootNode, "//name",xmlValue)
+xpathSApply(rootNode, "//price",xmlValue)
+
+url <= "http://espn.go.com/nfl/team/_/name/bal/baltimore-ravens"
+doc <- htmlTreeParse(url, useInternal=TRUE)
+doc
+# <li class="score">
+scores <-xpathSApply(doc, "//li[@class='score']",xmlValue)
+scores
+# <li class="team-name">
+teams <-xpathSApply(doc, "//li[@class='team-name']",xmlValue)
+teams
+
+
+# Reading JSON
+# http://en.wikipedia.org/wiki/JSON
+# Data store Number(double),string(double Quoted), Bollean(true,false) Array(ordered, comma separated in square bracket[])
+# Object (unordered, comman seperated collection of key:value pairs in curley bracket{}
+
+install.packages("jsonlite")
+
+library(jsonlite)
+install.packages('httr')
+jsonData <- fromJSON("https://api.github.com/users/jtleek/repos")
+names(jsonData)
+
+names(jsonData$owner)
+jsonData$owner$login
+
+
+# Writing data frames to JSON
+myjson <-toJSON(iris, pretty=TRUE)
+cat(myjson)
+names(myjson)
+names(iris)
+
+# Convert back to JSON
+iris2 <-fromJSON(myjson)
+head(iris2)
+# http://www.r-bloggers.com/new-package-jsonlite-a-smarter-json-encoderdecoder/
+#         jsonlite vignette

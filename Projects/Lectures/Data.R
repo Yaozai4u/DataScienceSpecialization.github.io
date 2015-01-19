@@ -135,3 +135,8 @@ cameraDataSubset <- read.xlsx("./data/cameras.xlsx", sheetIndex=1,
                         colIndex=colIndex, rowIndex=rowIndex)
 
 cameraDataSubset
+
+?write.xlsx
+# read.xlsx2 is faster than read.xlsx but unstable in subset of rows reading
+
+
